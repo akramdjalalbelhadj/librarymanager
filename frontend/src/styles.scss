@@ -1,0 +1,292 @@
+/* ============================================================
+   styles.scss — Styles globaux de l'application
+   Ces styles s'appliquent à TOUTE l'application.
+   Les styles spécifiques à un composant sont dans son fichier .scss propre.
+   ============================================================ */
+
+/* ─────────────────────────────────────────
+   VARIABLES CSS — Design System
+   Définies avec les custom properties CSS (var(--nom))
+   ───────────────────────────────────────── */
+:root {
+  /* Couleurs principales */
+  --color-primary: #1565C0;        /* Bleu foncé — couleur principale */
+  --color-primary-light: #1976D2;  /* Bleu — hover, accents */
+  --color-primary-dark: #0D47A1;   /* Bleu très foncé — actif */
+
+  --color-secondary: #FF6F00;      /* Orange — actions secondaires, badges */
+  --color-secondary-light: #FFA000;
+
+  --color-success: #2E7D32;        /* Vert — succès, disponible */
+  --color-warning: #F57F17;        /* Orange — avertissement */
+  --color-danger: #C62828;         /* Rouge — erreur, supprimer */
+
+  /* Couleurs neutres */
+  --color-background: #F5F7FA;     /* Gris très clair — fond de page */
+  --color-surface: #FFFFFF;        /* Blanc — cartes, modales */
+  --color-border: #E0E0E0;         /* Gris clair — bordures */
+  --color-text: #212121;           /* Noir — texte principal */
+  --color-text-secondary: #757575; /* Gris — texte secondaire */
+  --color-text-light: #BDBDBD;     /* Gris clair — placeholders */
+
+  /* Typographie */
+  --font-family: 'Roboto', 'Segoe UI', sans-serif;
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-lg: 1.125rem;   /* 18px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  --font-size-3xl: 2rem;      /* 32px */
+
+  /* Espacements */
+  --spacing-xs: 0.25rem;   /* 4px */
+  --spacing-sm: 0.5rem;    /* 8px */
+  --spacing-md: 1rem;      /* 16px */
+  --spacing-lg: 1.5rem;    /* 24px */
+  --spacing-xl: 2rem;      /* 32px */
+  --spacing-2xl: 3rem;     /* 48px */
+
+  /* Bordures */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
+
+  /* Ombres */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+}
+
+/* ─────────────────────────────────────────
+   RESET & BASE
+   ───────────────────────────────────────── */
+
+/* Box-sizing : inclut padding et border dans la largeur/hauteur */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px; /* Base de référence pour les rem */
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─────────────────────────────────────────
+   UTILITAIRES GLOBAUX
+   Classes réutilisables dans tous les composants
+   ───────────────────────────────────────── */
+
+/* Conteneur centré avec largeur maximale */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+/* Cartes */
+.card {
+  background: var(--color-surface);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-lg);
+  border: 1px solid var(--color-border);
+  transition: box-shadow var(--transition-normal);
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+  }
+}
+
+/* Boutons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-base);
+  font-family: var(--font-family);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+  color: white;
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-secondary-light);
+  }
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-primary);
+    color: white;
+  }
+}
+
+.btn-danger {
+  background-color: var(--color-danger);
+  color: white;
+
+  &:hover:not(:disabled) {
+    filter: brightness(0.9);
+  }
+}
+
+.btn-sm {
+  padding: var(--spacing-xs) var(--spacing-md);
+  font-size: var(--font-size-sm);
+}
+
+/* Badges / Tags */
+.badge {
+  display: inline-block;
+  padding: 2px var(--spacing-sm);
+  border-radius: 100px;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+.badge-success {
+  background-color: #E8F5E9;
+  color: var(--color-success);
+}
+
+.badge-danger {
+  background-color: #FFEBEE;
+  color: var(--color-danger);
+}
+
+.badge-warning {
+  background-color: #FFF8E1;
+  color: var(--color-warning);
+}
+
+.badge-info {
+  background-color: #E3F2FD;
+  color: var(--color-primary);
+}
+
+/* Formulaires */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
+}
+
+.form-label {
+  font-weight: 500;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+}
+
+.form-control {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-base);
+  font-family: var(--font-family);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  width: 100%;
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.15);
+  }
+
+  &.is-invalid {
+    border-color: var(--color-danger);
+  }
+
+  &::placeholder {
+    color: var(--color-text-light);
+  }
+}
+
+.form-error {
+  font-size: var(--font-size-sm);
+  color: var(--color-danger);
+}
+
+/* Messages d'alerte */
+.alert {
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  margin-bottom: var(--spacing-md);
+  border: 1px solid transparent;
+}
+
+.alert-error {
+  background-color: #FFEBEE;
+  border-color: #EF9A9A;
+  color: var(--color-danger);
+}
+
+.alert-success {
+  background-color: #E8F5E9;
+  border-color: #A5D6A7;
+  color: var(--color-success);
+}
+
+/* Icônes Material */
+.material-icons {
+  font-size: inherit;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+/* Utilitaires flexbox */
+.flex { display: flex; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-col { display: flex; flex-direction: column; }
+.gap-sm { gap: var(--spacing-sm); }
+.gap-md { gap: var(--spacing-md); }
+
+/* Texte */
+.text-center { text-align: center; }
+.text-secondary { color: var(--color-text-secondary); }
+.text-sm { font-size: var(--font-size-sm); }
+.font-bold { font-weight: 700; }

@@ -1,0 +1,76 @@
+<!-- Page de profil -->
+<div class="profile">
+  <div class="container">
+
+    <div class="profile__header">
+      <h1 class="profile__title">
+        <span class="material-icons">account_circle</span>
+        Mon Profil
+      </h1>
+    </div>
+
+    <!-- Chargement -->
+    <div class="profile__loading" *ngIf="isLoading">
+      <div class="profile__spinner"></div>
+    </div>
+
+    <!-- Erreur -->
+    <div class="alert alert-error" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+    <!-- Contenu du profil -->
+    <div class="profile__card card" *ngIf="user && !isLoading">
+
+      <!-- Avatar et infos principales -->
+      <div class="profile__top">
+        <div class="profile__avatar">
+          <span class="material-icons">account_circle</span>
+        </div>
+        <div class="profile__main-info">
+          <h2 class="profile__name">{{ user.prenom }} {{ user.nom }}</h2>
+          <span class="badge" [ngClass]="getRoleBadgeClass(user.role)">
+            {{ getRoleLabel(user.role) }}
+          </span>
+          <span class="badge" [ngClass]="user.actif ? 'badge-success' : 'badge-danger'">
+            {{ user.actif ? 'Compte actif' : 'Compte désactivé' }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Informations détaillées -->
+      <div class="profile__details">
+        <div class="profile__detail-item">
+          <span class="material-icons">email</span>
+          <div>
+            <span class="profile__detail-label">Adresse email</span>
+            <span class="profile__detail-value">{{ user.email }}</span>
+          </div>
+        </div>
+
+        <div class="profile__detail-item">
+          <span class="material-icons">badge</span>
+          <div>
+            <span class="profile__detail-label">Numéro étudiant</span>
+            <span class="profile__detail-value">
+              {{ user.numeroEtudiant || 'Non renseigné' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="profile__detail-item">
+          <span class="material-icons">manage_accounts</span>
+          <div>
+            <span class="profile__detail-label">Rôle</span>
+            <span class="profile__detail-value">{{ getRoleLabel(user.role) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Note d'information pour les étudiants -->
+      <div class="profile__note" *ngIf="!authService.isAdmin">
+        <span class="material-icons">info</span>
+        <p>Pour modifier vos informations personnelles, contactez un administrateur.</p>
+      </div>
+
+    </div>
+  </div>
+</div>

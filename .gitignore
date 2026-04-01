@@ -1,10 +1,25 @@
-git addHELP.md
+# ============================================================
+#  .gitignore — LibraryManager (Spring Boot + Angular)
+#  Ce fichier indique à Git quels fichiers/dossiers ignorer.
+# ============================================================
+
+# ─────────────────────────────────────────
+#  BACKEND — Spring Boot / Maven
+# ─────────────────────────────────────────
+
+# Dossier de compilation Maven (classes compilées, JAR, WAR)
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-### STS ###
+# Fichiers de configuration IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Fichiers Eclipse / STS
 .apt_generated
 .classpath
 .factorypath
@@ -13,21 +28,59 @@ target/
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
+# Fichiers NetBeans
 /nbproject/private/
 /nbbuild/
-/dist/
 /nbdist/
 /.nb-gradle/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### VS Code ###
+# Fichiers VS Code
 .vscode/
+
+# Logs générés par l'application
+*.log
+logs/
+
+# Fichiers de configuration locaux (contiennent souvent des secrets)
+application-local.properties
+application-local.yml
+
+# ─────────────────────────────────────────
+#  FRONTEND — Angular / Node.js
+# ─────────────────────────────────────────
+
+# Dépendances npm (peuvent peser 200-500 Mo, se réinstallent avec "npm install")
+frontend/node_modules/
+
+# Dossier de build Angular (généré avec "ng build")
+frontend/dist/
+
+# Cache Angular CLI (généré automatiquement)
+frontend/.angular/
+
+# ─────────────────────────────────────────
+#  SYSTEME D'EXPLOITATION
+# ─────────────────────────────────────────
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# ─────────────────────────────────────────
+#  FICHIERS SENSIBLES
+# ─────────────────────────────────────────
+
+# Fichiers d'environnement (contiennent souvent des mots de passe / clés API)
+.env
+.env.local
+.env.*.local
+
+# Fichiers temporaires
+*.tmp
+*.bak

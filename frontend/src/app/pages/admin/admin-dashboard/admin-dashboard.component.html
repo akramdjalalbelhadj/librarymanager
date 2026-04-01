@@ -1,0 +1,48 @@
+<!-- Tableau de bord admin -->
+<div class="dashboard">
+  <div class="container">
+
+    <div class="dashboard__header">
+      <h1 class="dashboard__title">
+        <span class="material-icons">dashboard</span>
+        Tableau de bord
+      </h1>
+      <p class="text-secondary">Bienvenue dans l'espace d'administration.</p>
+    </div>
+
+    <!-- Statistiques -->
+    <div class="dashboard__stats" *ngIf="!isLoading">
+      <div class="stat-card card">
+        <span class="material-icons stat-card__icon">menu_book</span>
+        <div class="stat-card__info">
+          <span class="stat-card__value">{{ totalBooks }}</span>
+          <span class="stat-card__label">Livres au catalogue</span>
+        </div>
+      </div>
+
+      <div class="stat-card card">
+        <span class="material-icons stat-card__icon">school</span>
+        <div class="stat-card__info">
+          <span class="stat-card__value">{{ totalStudents }}</span>
+          <span class="stat-card__label">Étudiants inscrits</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Raccourcis -->
+    <h2 class="dashboard__section-title">Actions rapides</h2>
+    <div class="dashboard__shortcuts">
+      <a class="shortcut-card card"
+         *ngFor="let s of shortcuts"
+         [routerLink]="s.route">
+        <span class="material-icons shortcut-card__icon">{{ s.icon }}</span>
+        <div>
+          <h3 class="shortcut-card__title">{{ s.titre }}</h3>
+          <p class="shortcut-card__desc text-secondary text-sm">{{ s.description }}</p>
+        </div>
+        <span class="material-icons shortcut-card__arrow">arrow_forward</span>
+      </a>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,14 @@
+/* ============================================================
+   app.component.scss — Styles du composant racine
+   ============================================================ */
+
+/*
+  main-content : zone principale sous la navbar.
+  On ajoute un padding-top égal à la hauteur de la navbar (64px)
+  pour que le contenu ne soit pas caché derrière elle.
+  La navbar est en position "fixed" (elle reste en haut lors du scroll).
+*/
+.main-content {
+  padding-top: 64px; /* Hauteur de la navbar */
+  min-height: calc(100vh - 64px); /* Occupe toute la hauteur disponible */
+}

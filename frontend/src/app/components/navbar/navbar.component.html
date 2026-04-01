@@ -1,0 +1,106 @@
+<!--
+  navbar.component.html — Barre de navigation
+
+  DIRECTIVES ANGULAR UTILISÉES :
+  ────────────────────────────────
+  *ngIf="condition"           → affiche/cache un élément selon la condition
+  [routerLink]="'/home'"      → lien de navigation Angular (pas href !)
+  routerLinkActive="active"   → ajoute la classe "active" quand le lien est actif
+  (click)="maMethode()"       → écouteur d'événement clic
+  {{ expression }}            → interpolation — affiche la valeur d'une variable
+-->
+
+<nav class="navbar">
+  <div class="navbar__container">
+
+    <!-- Logo / Titre de l'application -->
+    <a class="navbar__brand" [routerLink]="'/home'" (click)="closeMenu()">
+      <span class="material-icons">local_library</span>
+      <span class="navbar__brand-text">LibraryManager</span>
+    </a>
+
+    <!-- Bouton hamburger (visible uniquement sur mobile) -->
+    <button class="navbar__hamburger" (click)="toggleMenu()" aria-label="Menu">
+      <span class="material-icons">{{ menuOpen ? 'close' : 'menu' }}</span>
+    </button>
+
+    <!-- Liens de navigation -->
+    <!--
+      [class.is-open]="menuOpen" : ajoute/retire la classe CSS "is-open" selon menuOpen.
+      C'est la syntaxe "property binding" Angular — alternative propre aux *ngClass.
+    -->
+    <ul class="navbar__links" [class.is-open]="menuOpen">
+
+      <!-- Accueil — toujours visible -->
+      <li>
+        <a [routerLink]="'/home'"
+           routerLinkActive="active"
+           (click)="closeMenu()">
+          <span class="material-icons">home</span>
+          Accueil
+        </a>
+      </li>
+
+      <!-- Livres — visible uniquement si connecté -->
+      <li *ngIf="currentUser">
+        <a [routerLink]="'/books'"
+           routerLinkActive="active"
+           (click)="closeMenu()">
+          <span class="material-icons">menu_book</span>
+          Livres
+        </a>
+      </li>
+
+      <!-- Administration — visible uniquement si ADMIN -->
+      <!--
+        *ngIf="isAdmin" : utilise le getter isAdmin du composant TypeScript.
+        C'est le pont entre la logique TypeScript et le template HTML.
+      -->
+      <li *ngIf="isAdmin">
+        <a [routerLink]="'/admin'"
+           routerLinkActive="active"
+           (click)="closeMenu()">
+          <span class="material-icons">admin_panel_settings</span>
+          Administration
+        </a>
+      </li>
+
+      <!-- Séparateur + infos utilisateur si connecté -->
+      <li *ngIf="currentUser" class="navbar__separator"></li>
+
+      <!-- Mon Profil — visible si connecté -->
+      <li *ngIf="currentUser">
+        <a [routerLink]="'/profile'"
+           routerLinkActive="active"
+           (click)="closeMenu()">
+          <span class="material-icons">account_circle</span>
+          <!--
+            On utilise currentUser.prenom (sans ?.) car on est déjà à l'intérieur
+            d'un *ngIf="currentUser" — Angular garantit que currentUser n'est pas null ici.
+          -->
+          {{ currentUser.prenom }}
+        </a>
+      </li>
+
+      <!-- Déconnexion — visible si connecté -->
+      <li *ngIf="currentUser">
+        <button class="navbar__logout" (click)="logout()">
+          <span class="material-icons">logout</span>
+          Déconnexion
+        </button>
+      </li>
+
+      <!-- Connexion — visible uniquement si NON connecté -->
+      <li *ngIf="!currentUser">
+        <a [routerLink]="'/login'"
+           routerLinkActive="active"
+           class="navbar__login-btn"
+           (click)="closeMenu()">
+          <span class="material-icons">login</span>
+          Connexion
+        </a>
+      </li>
+
+    </ul>
+  </div>
+</nav>

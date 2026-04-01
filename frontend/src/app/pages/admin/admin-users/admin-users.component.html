@@ -1,0 +1,160 @@
+<!-- Page gestion utilisateurs -->
+<div class="admin-users">
+  <div class="container">
+
+    <!-- En-tête -->
+    <div class="admin-users__header">
+      <div>
+        <h1 class="admin-users__title">
+          <span class="material-icons">group</span>
+          Gestion des utilisateurs
+        </h1>
+        <p class="text-secondary">{{ users.length }} utilisateur(s) au total</p>
+      </div>
+      <button class="btn btn-primary" (click)="toggleForm()">
+        <span class="material-icons">{{ showForm ? 'close' : 'person_add' }}</span>
+        {{ showForm ? 'Annuler' : 'Nouveau compte' }}
+      </button>
+    </div>
+
+    <!-- Messages -->
+    <div class="alert alert-success" *ngIf="successMessage">
+      <span class="material-icons">check_circle</span>
+      {{ successMessage }}
+    </div>
+    <div class="alert alert-error" *ngIf="errorMessage">
+      <span class="material-icons">error_outline</span>
+      {{ errorMessage }}
+    </div>
+
+    <!-- ── Formulaire de création ── -->
+    <div class="admin-users__form card" *ngIf="showForm">
+      <h2 class="admin-users__form-title">
+        <span class="material-icons">person_add</span>
+        Créer un compte
+      </h2>
+
+      <form [formGroup]="createForm" (ngSubmit)="onSubmit()">
+        <div class="admin-users__form-grid">
+
+          <div class="form-group">
+            <label class="form-label">Nom *</label>
+            <input type="text" class="form-control" formControlName="nom"
+                   placeholder="Dupont"
+                   [class.is-invalid]="getControl('nom').invalid && getControl('nom').touched">
+            <span class="form-error" *ngIf="getControl('nom').invalid && getControl('nom').touched">
+              Le nom est obligatoire.
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Prénom *</label>
+            <input type="text" class="form-control" formControlName="prenom"
+                   placeholder="Jean"
+                   [class.is-invalid]="getControl('prenom').invalid && getControl('prenom').touched">
+            <span class="form-error" *ngIf="getControl('prenom').invalid && getControl('prenom').touched">
+              Le prénom est obligatoire.
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Email *</label>
+            <input type="email" class="form-control" formControlName="email"
+                   placeholder="jean.dupont@univ.fr"
+                   [class.is-invalid]="getControl('email').invalid && getControl('email').touched">
+            <span class="form-error" *ngIf="getControl('email').invalid && getControl('email').touched">
+              <span *ngIf="getControl('email').errors?.['required']">L'email est obligatoire.</span>
+              <span *ngIf="getControl('email').errors?.['email']">Format invalide.</span>
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Mot de passe *</label>
+            <input type="password" class="form-control" formControlName="password"
+                   placeholder="Minimum 6 caractères"
+                   [class.is-invalid]="getControl('password').invalid && getControl('password').touched">
+            <span class="form-error" *ngIf="getControl('password').invalid && getControl('password').touched">
+              Minimum 6 caractères.
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Numéro étudiant</label>
+            <input type="text" class="form-control" formControlName="numeroEtudiant"
+                   placeholder="21234567">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Rôle *</label>
+            <select class="form-control" formControlName="role">
+              <option value="ETUDIANT">Étudiant</option>
+              <option value="ADMIN">Administrateur</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="admin-users__form-actions">
+          <button type="button" class="btn btn-outline" (click)="toggleForm()">Annuler</button>
+          <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+            <span class="material-icons" *ngIf="!isSubmitting">save</span>
+            {{ isSubmitting ? 'Création...' : 'Créer le compte' }}
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- ── Chargement ── -->
+    <div class="admin-users__loading" *ngIf="isLoading">
+      <div class="admin-users__spinner"></div>
+    </div>
+
+    <!-- ── Tableau des utilisateurs ── -->
+    <div class="admin-users__table-wrapper" *ngIf="!isLoading">
+      <table class="admin-users__table">
+        <thead>
+          <tr>
+            <th>Utilisateur</th>
+            <th>Email</th>
+            <th>N° Étudiant</th>
+            <th>Rôle</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users" [class.is-inactive]="!user.actif">
+            <td class="admin-users__user-cell">
+              <span class="material-icons">account_circle</span>
+              <span>{{ user.prenom }} {{ user.nom }}</span>
+            </td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.numeroEtudiant || '—' }}</td>
+            <td>
+              <span class="badge" [ngClass]="getRoleBadge(user.role)">
+                {{ getRoleLabel(user.role) }}
+              </span>
+            </td>
+            <td>
+              <span class="badge" [ngClass]="user.actif ? 'badge-success' : 'badge-danger'">
+                {{ user.actif ? 'Actif' : 'Inactif' }}
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-sm"
+                      [ngClass]="user.actif ? 'btn-danger' : 'btn-primary'"
+                      (click)="toggleStatus(user)"
+                      [title]="user.actif ? 'Désactiver le compte' : 'Activer le compte'">
+                <span class="material-icons">
+                  {{ user.actif ? 'block' : 'check_circle' }}
+                </span>
+                {{ user.actif ? 'Désactiver' : 'Activer' }}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

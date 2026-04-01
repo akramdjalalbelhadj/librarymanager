@@ -1,0 +1,93 @@
+<!-- Page d'accueil -->
+<div class="home">
+
+  <!-- ── Section Hero ── -->
+  <section class="home__hero">
+    <div class="home__hero-content">
+      <span class="material-icons home__hero-icon">local_library</span>
+      <h1 class="home__hero-title">Bibliothèque Universitaire</h1>
+      <p class="home__hero-subtitle">
+        Accédez au catalogue de livres, effectuez des recherches et gérez votre espace étudiant.
+      </p>
+
+      <!-- Boutons selon l'état de connexion -->
+      <div class="home__hero-actions">
+
+        <!-- Non connecté : bouton connexion -->
+        <a *ngIf="!authService.isLoggedIn"
+           [routerLink]="'/login'"
+           class="btn btn-primary home__btn">
+          <span class="material-icons">login</span>
+          Se connecter
+        </a>
+
+        <!-- Connecté : bouton vers les livres -->
+        <a *ngIf="authService.isLoggedIn"
+           [routerLink]="'/books'"
+           class="btn btn-primary home__btn">
+          <span class="material-icons">menu_book</span>
+          Voir les livres
+        </a>
+
+        <!-- Admin connecté : bouton administration en plus -->
+        <a *ngIf="authService.isAdmin"
+           [routerLink]="'/admin'"
+           class="btn btn-outline home__btn">
+          <span class="material-icons">admin_panel_settings</span>
+          Administration
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Section Fonctionnalités ── -->
+  <section class="home__features">
+    <div class="container">
+      <h2 class="home__section-title">Fonctionnalités</h2>
+
+      <!--
+        *ngFor : directive Angular pour itérer sur un tableau.
+        Syntaxe : *ngFor="let item of tableau"
+        trackBy : optimisation des performances — Angular réutilise les éléments
+                  existants au lieu de tout recréer à chaque changement.
+      -->
+      <div class="home__features-grid">
+        <div class="home__feature-card card"
+             *ngFor="let feature of features; trackBy: trackByIndex">
+          <span class="material-icons home__feature-icon">{{ feature.icon }}</span>
+          <h3 class="home__feature-title">{{ feature.titre }}</h3>
+          <p class="home__feature-desc">{{ feature.description }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Section Comptes de démo ── -->
+  <section class="home__demo">
+    <div class="container">
+      <div class="home__demo-card card">
+        <h2>Comptes de démonstration</h2>
+        <p class="text-secondary">Utilisez ces identifiants pour tester l'application :</p>
+
+        <div class="home__demo-accounts">
+          <div class="home__demo-account">
+            <span class="badge badge-danger">ADMIN</span>
+            <div>
+              <strong>admin&#64;library.fr</strong>
+              <span class="text-secondary"> / admin123</span>
+            </div>
+          </div>
+          <div class="home__demo-account">
+            <span class="badge badge-info">ETUDIANT</span>
+            <div>
+              <strong>alice.martin&#64;univ.fr</strong>
+              <span class="text-secondary"> / password</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
