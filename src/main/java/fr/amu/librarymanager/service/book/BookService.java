@@ -1,9 +1,9 @@
-package fr.amu.librarymanager.service;
+package fr.amu.librarymanager.service.book;
 
-import fr.amu.librarymanager.dto.BookDto;
-import fr.amu.librarymanager.entity.Book;
-import fr.amu.librarymanager.mapper.BookMapper;
-import fr.amu.librarymanager.repository.BookRepository;
+import fr.amu.librarymanager.controller.book.BookDto;
+import fr.amu.librarymanager.controller.book.BookMapper;
+import fr.amu.librarymanager.entity.book.Book;
+import fr.amu.librarymanager.repository.book.BookRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -12,6 +12,10 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
+/**
+ * Service pour la gestion des livres.
+ * Placé dans service.book pour regrouper toute la logique métier des livres.
+ */
 @Service
 @Transactional
 public class BookService {
@@ -28,10 +32,7 @@ public class BookService {
 
     @Transactional(readOnly = true)
     public List<BookDto> getAllBooks() {
-        return bookRepository.findAll()
-                .stream()
-                .map(bookMapper::toDto)
-                .toList();
+        return bookRepository.findAll().stream().map(bookMapper::toDto).toList();
     }
 
     @Transactional(readOnly = true)
@@ -43,26 +44,17 @@ public class BookService {
 
     @Transactional(readOnly = true)
     public List<BookDto> searchBooks(String keyword) {
-        if (!StringUtils.hasText(keyword)) {
-            return getAllBooks();
-        }
-        return bookRepository.searchByKeyword(keyword.trim())
-                .stream()
-                .map(bookMapper::toDto)
-                .toList();
+        if (!StringUtils.hasText(keyword)) return getAllBooks();
+        return bookRepository.searchByKeyword(keyword.trim()).stream().map(bookMapper::toDto).toList();
     }
 
     @Transactional(readOnly = true)
     public List<BookDto> getAvailableBooks() {
-        return bookRepository.findByExemplairesDisponiblesGreaterThan(0)
-                .stream()
-                .map(bookMapper::toDto)
-                .toList();
+        return bookRepository.findByExemplairesDisponiblesGreaterThan(0).stream().map(bookMapper::toDto).toList();
     }
 
     public BookDto createBook(BookDto bookDto) {
-        Book book = bookMapper.toEntity(bookDto);
-        return bookMapper.toDto(bookRepository.save(book));
+        return bookMapper.toDto(bookRepository.save(bookMapper.toEntity(bookDto)));
     }
 
     public BookDto updateBook(Long id, BookDto bookDto) {
@@ -82,9 +74,7 @@ public class BookService {
     }
 
     public void deleteBook(Long id) {
-        if (!bookRepository.existsById(id)) {
-            throw new RuntimeException("Livre non trouvé : " + id);
-        }
+        if (!bookRepository.existsById(id)) throw new RuntimeException("Livre non trouvé : " + id);
         bookRepository.deleteById(id);
     }
 }

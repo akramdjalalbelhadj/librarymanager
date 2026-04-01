@@ -1,11 +1,11 @@
-package fr.amu.librarymanager.service;
+package fr.amu.librarymanager.service.user;
 
-import fr.amu.librarymanager.dto.CreateUserRequest;
-import fr.amu.librarymanager.dto.UserDto;
-import fr.amu.librarymanager.entity.Role;
-import fr.amu.librarymanager.entity.User;
-import fr.amu.librarymanager.mapper.UserMapper;
-import fr.amu.librarymanager.repository.UserRepository;
+import fr.amu.librarymanager.controller.user.CreateUserRequest;
+import fr.amu.librarymanager.controller.user.UserDto;
+import fr.amu.librarymanager.controller.user.UserMapper;
+import fr.amu.librarymanager.entity.user.Role;
+import fr.amu.librarymanager.entity.user.User;
+import fr.amu.librarymanager.repository.user.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Service pour la gestion des utilisateurs.
+ * Placé dans service.user pour regrouper toute la logique métier des utilisateurs.
+ */
 @Service
 @Transactional
 public class UserService {
@@ -34,25 +38,12 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public List<UserDto> getAllUsers() {
-        return userRepository.findAll()
-                .stream()
-                .map(userMapper::toDto)
-                .toList();
+        return userRepository.findAll().stream().map(userMapper::toDto).toList();
     }
 
     @Transactional(readOnly = true)
     public List<UserDto> getAllStudents() {
-        return userRepository.findByRole(Role.ETUDIANT)
-                .stream()
-                .map(userMapper::toDto)
-                .toList();
-    }
-
-    @Transactional(readOnly = true)
-    public UserDto getUserById(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé : " + id));
-        return userMapper.toDto(user);
+        return userRepository.findByRole(Role.ETUDIANT).stream().map(userMapper::toDto).toList();
     }
 
     @Transactional(readOnly = true)
@@ -72,15 +63,14 @@ public class UserService {
         User user = userMapper.toEntity(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        User savedUser = userRepository.save(user);
-        log.info("Utilisateur créé avec l'id : {}", savedUser.getId());
-        return userMapper.toDto(savedUser);
+        User saved = userRepository.save(user);
+        log.info("Utilisateur créé avec l'id : {}", saved.getId());
+        return userMapper.toDto(saved);
     }
 
     public UserDto toggleUserStatus(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé : " + id));
-
         user.setActif(!user.isActif());
         return userMapper.toDto(userRepository.save(user));
     }

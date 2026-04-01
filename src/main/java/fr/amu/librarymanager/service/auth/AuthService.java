@@ -1,9 +1,9 @@
-package fr.amu.librarymanager.service;
+package fr.amu.librarymanager.service.auth;
 
-import fr.amu.librarymanager.dto.LoginRequest;
-import fr.amu.librarymanager.dto.LoginResponse;
-import fr.amu.librarymanager.entity.User;
-import fr.amu.librarymanager.repository.UserRepository;
+import fr.amu.librarymanager.controller.auth.LoginRequest;
+import fr.amu.librarymanager.controller.auth.LoginResponse;
+import fr.amu.librarymanager.entity.user.User;
+import fr.amu.librarymanager.repository.user.UserRepository;
 import fr.amu.librarymanager.security.JwtTokenProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +12,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service d'authentification.
+ * Placé dans service.auth pour regrouper tout ce qui concerne la connexion.
+ */
 @Service
 public class AuthService {
 
@@ -33,10 +37,7 @@ public class AuthService {
         log.info("Tentative de connexion pour : {}", request.getEmail());
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
         String token = jwtTokenProvider.generateToken(authentication);
@@ -45,13 +46,6 @@ public class AuthService {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("Utilisateur introuvable après authentification"));
 
-        return new LoginResponse(
-                token,
-                user.getId(),
-                user.getNom(),
-                user.getPrenom(),
-                user.getEmail(),
-                user.getRole()
-        );
+        return new LoginResponse(token, user.getId(), user.getNom(), user.getPrenom(), user.getEmail(), user.getRole());
     }
 }

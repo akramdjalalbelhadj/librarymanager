@@ -1,5 +1,9 @@
-package fr.amu.librarymanager.dto;
+package fr.amu.librarymanager.controller.book;
 
+/**
+ * DTO pour les livres — ce qu'on expose via l'API REST.
+ * Placé dans controller.book avec BookController et BookMapper.
+ */
 public class BookDto {
 
     private Long id;

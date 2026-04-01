@@ -1,7 +1,7 @@
 package fr.amu.librarymanager.security;
 
-import fr.amu.librarymanager.entity.User;
-import fr.amu.librarymanager.repository.UserRepository;
+import fr.amu.librarymanager.entity.user.User;
+import fr.amu.librarymanager.repository.user.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -37,9 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRole().name());
 
         return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                List.of(authority)
+                user.getEmail(), user.getPassword(), List.of(authority)
         );
     }
 }

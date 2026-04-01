@@ -1,8 +1,12 @@
-package fr.amu.librarymanager.dto;
+package fr.amu.librarymanager.controller.auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
+/**
+ * Requête de connexion reçue du frontend.
+ * Placée dans controller.auth car elle n'est utilisée que par AuthController.
+ */
 public class LoginRequest {
 
     @Email

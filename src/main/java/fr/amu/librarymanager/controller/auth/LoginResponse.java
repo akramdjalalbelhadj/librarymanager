@@ -1,7 +1,11 @@
-package fr.amu.librarymanager.dto;
+package fr.amu.librarymanager.controller.auth;
 
-import fr.amu.librarymanager.entity.Role;
+import fr.amu.librarymanager.entity.user.Role;
 
+/**
+ * Réponse renvoyée au frontend après une connexion réussie.
+ * Contient le token JWT et les infos de base de l'utilisateur.
+ */
 public class LoginResponse {
 
     private String token;

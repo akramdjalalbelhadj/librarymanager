@@ -1,4 +1,4 @@
-package fr.amu.librarymanager.entity;
+package fr.amu.librarymanager.entity.book;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Positive;
 
 /**
  * Entité Book — représente la table "books" en base de données.
+ * Placée dans le package entity.book pour regrouper tout ce qui concerne les livres.
  */
 @Entity
 @Table(name = "books")
@@ -44,11 +45,7 @@ public class Book {
     @Column(length = 1000)
     private String description;
 
-    // ── Constructeurs ──
-
     public Book() {}
-
-    // ── Getters ──
 
     public Long getId() { return id; }
     public String getTitre() { return titre; }
@@ -59,8 +56,6 @@ public class Book {
     public int getNombreExemplaires() { return nombreExemplaires; }
     public int getExemplairesDisponibles() { return exemplairesDisponibles; }
     public String getDescription() { return description; }
-
-    // ── Setters ──
 
     public void setId(Long id) { this.id = id; }
     public void setTitre(String titre) { this.titre = titre; }

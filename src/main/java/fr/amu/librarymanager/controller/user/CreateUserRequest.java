@@ -1,11 +1,15 @@
-package fr.amu.librarymanager.dto;
+package fr.amu.librarymanager.controller.user;
 
-import fr.amu.librarymanager.entity.Role;
+import fr.amu.librarymanager.entity.user.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+/**
+ * Requête de création d'un utilisateur envoyée par l'admin.
+ * Contient le mot de passe en clair — le service le hashera.
+ */
 public class CreateUserRequest {
 
     @NotBlank

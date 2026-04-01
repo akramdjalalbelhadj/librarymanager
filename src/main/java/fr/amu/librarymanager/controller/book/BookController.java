@@ -1,10 +1,7 @@
-package fr.amu.librarymanager.controller;
+package fr.amu.librarymanager.controller.book;
 
-import fr.amu.librarymanager.dto.BookDto;
-import fr.amu.librarymanager.service.BookService;
+import fr.amu.librarymanager.service.book.BookService;
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,11 +9,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller pour les livres.
+ * Regroupé dans controller.book avec BookDto et BookMapper.
+ */
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
-
-    private static final Logger log = LoggerFactory.getLogger(BookController.class);
 
     private final BookService bookService;
 

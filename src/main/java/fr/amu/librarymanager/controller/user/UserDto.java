@@ -1,7 +1,11 @@
-package fr.amu.librarymanager.dto;
+package fr.amu.librarymanager.controller.user;
 
-import fr.amu.librarymanager.entity.Role;
+import fr.amu.librarymanager.entity.user.Role;
 
+/**
+ * DTO pour les utilisateurs — ce qu'on expose via l'API REST.
+ * Ne contient jamais le mot de passe.
+ */
 public class UserDto {
 
     private Long id;

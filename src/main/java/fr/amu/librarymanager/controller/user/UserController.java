@@ -1,11 +1,7 @@
-package fr.amu.librarymanager.controller;
+package fr.amu.librarymanager.controller.user;
 
-import fr.amu.librarymanager.dto.CreateUserRequest;
-import fr.amu.librarymanager.dto.UserDto;
-import fr.amu.librarymanager.service.UserService;
+import fr.amu.librarymanager.service.user.UserService;
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,10 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller pour les utilisateurs.
+ * Regroupé dans controller.user avec UserDto, CreateUserRequest et UserMapper.
+ */
 @RestController
 public class UserController {
-
-    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
 
@@ -28,8 +26,7 @@ public class UserController {
 
     @GetMapping("/api/users/me")
     public ResponseEntity<UserDto> getCurrentUser(@AuthenticationPrincipal UserDetails currentUser) {
-        UserDto user = userService.getUserByEmail(currentUser.getUsername());
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(userService.getUserByEmail(currentUser.getUsername()));
     }
 
     @GetMapping("/api/admin/users")
@@ -47,8 +44,7 @@ public class UserController {
     @PostMapping("/api/admin/users")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody CreateUserRequest request) {
-        UserDto created = userService.createUser(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
     }
 
     @PatchMapping("/api/admin/users/{id}/toggle")

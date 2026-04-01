@@ -1,4 +1,4 @@
-package fr.amu.librarymanager.entity;
+package fr.amu.librarymanager.entity.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -6,9 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 
 /**
  * Entité User — représente la table "users" en base de données.
- *
- * Sans Lombok, on écrit explicitement les getters, setters et constructeurs.
- * C'est plus verbeux mais 100% transparent — pas de magie cachée.
+ * Placée dans entity.user avec Role pour regrouper tout le contexte utilisateur.
  */
 @Entity
 @Table(name = "users")
@@ -45,11 +43,7 @@ public class User {
     @Column(nullable = false)
     private boolean actif = true;
 
-    // ── Constructeurs ──
-
     public User() {}
-
-    // ── Getters ──
 
     public Long getId() { return id; }
     public String getNom() { return nom; }
@@ -59,8 +53,6 @@ public class User {
     public String getNumeroEtudiant() { return numeroEtudiant; }
     public Role getRole() { return role; }
     public boolean isActif() { return actif; }
-
-    // ── Setters ──
 
     public void setId(Long id) { this.id = id; }
     public void setNom(String nom) { this.nom = nom; }
