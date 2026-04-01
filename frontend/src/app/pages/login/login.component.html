@@ -1,0 +1,121 @@
+<!-- Page de connexion -->
+<div class="login">
+  <div class="login__card card">
+
+    <!-- En-tête -->
+    <div class="login__header">
+      <span class="material-icons login__icon">local_library</span>
+      <h1 class="login__title">Connexion</h1>
+      <p class="login__subtitle">Bibliothèque Universitaire</p>
+    </div>
+
+    <!-- Message d'erreur -->
+    <!--
+      *ngIf="errorMessage" : affiche le bloc seulement si errorMessage n'est pas vide.
+      Une chaîne vide "" est "falsy" en JavaScript → le bloc est caché.
+    -->
+    <div class="alert alert-error" *ngIf="errorMessage">
+      <span class="material-icons">error_outline</span>
+      {{ errorMessage }}
+    </div>
+
+    <!--
+      [formGroup]="loginForm" : lie le formulaire HTML au FormGroup TypeScript.
+      (ngSubmit)="onSubmit()" : appelle onSubmit() quand le formulaire est soumis
+                                (bouton submit OU touche Entrée).
+    -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login__form" novalidate>
+
+      <!-- Champ Email -->
+      <div class="form-group">
+        <label class="form-label" for="email">
+          <span class="material-icons">email</span>
+          Adresse email
+        </label>
+        <input
+          id="email"
+          type="email"
+          class="form-control"
+          formControlName="email"
+          placeholder="votre.email@univ.fr"
+          autocomplete="email"
+          [class.is-invalid]="emailControl.invalid && emailControl.touched"
+        >
+        <!--
+          Affichage conditionnel des erreurs de validation.
+          emailControl.touched → l'utilisateur a cliqué dans le champ puis l'a quitté.
+          On n'affiche pas les erreurs immédiatement pour ne pas être agressif.
+          emailControl.errors?.['required'] → accès sécurisé à l'erreur 'required'.
+        -->
+        <span class="form-error" *ngIf="emailControl.invalid && emailControl.touched">
+          <span *ngIf="emailControl.errors?.['required']">L'email est obligatoire.</span>
+          <span *ngIf="emailControl.errors?.['email']">Format d'email invalide.</span>
+        </span>
+      </div>
+
+      <!-- Champ Mot de passe -->
+      <div class="form-group">
+        <label class="form-label" for="password">
+          <span class="material-icons">lock</span>
+          Mot de passe
+        </label>
+        <div class="login__password-wrapper">
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            class="form-control"
+            formControlName="password"
+            placeholder="Votre mot de passe"
+            autocomplete="current-password"
+            [class.is-invalid]="passwordControl.invalid && passwordControl.touched"
+          >
+          <!-- Bouton pour afficher/masquer le mot de passe -->
+          <button
+            type="button"
+            class="login__password-toggle"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'">
+            <span class="material-icons">
+              {{ showPassword ? 'visibility_off' : 'visibility' }}
+            </span>
+          </button>
+        </div>
+        <span class="form-error" *ngIf="passwordControl.invalid && passwordControl.touched">
+          Le mot de passe est obligatoire.
+        </span>
+      </div>
+
+      <!-- Bouton de soumission -->
+      <!--
+        [disabled]="isLoading" : désactive le bouton pendant le chargement.
+        Empêche les doubles soumissions.
+      -->
+      <button
+        type="submit"
+        class="btn btn-primary login__submit"
+        [disabled]="isLoading">
+
+        <!-- Spinner pendant le chargement -->
+        <span class="login__spinner" *ngIf="isLoading"></span>
+        <span class="material-icons" *ngIf="!isLoading">login</span>
+
+        {{ isLoading ? 'Connexion...' : 'Se connecter' }}
+      </button>
+
+    </form>
+
+    <!-- Comptes de démo pour faciliter les tests -->
+    <div class="login__demo">
+      <p class="text-secondary text-sm">Comptes de démonstration :</p>
+      <div class="login__demo-list">
+        <span class="badge badge-danger">ADMIN</span>
+        <code>admin&#64;library.fr / admin123</code>
+      </div>
+      <div class="login__demo-list">
+        <span class="badge badge-info">ÉTUDIANT</span>
+        <code>alice.martin&#64;univ.fr / password</code>
+      </div>
+    </div>
+
+  </div>
+</div>

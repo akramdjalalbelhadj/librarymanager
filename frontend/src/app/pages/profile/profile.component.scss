@@ -1,0 +1,121 @@
+/* ============================================================
+   profile.component.scss — Styles de la page profil
+   ============================================================ */
+
+.profile {
+  padding: var(--spacing-xl) 0;
+
+  &__header { margin-bottom: var(--spacing-lg); }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    .material-icons { color: var(--color-primary); font-size: 32px; }
+  }
+
+  &__loading {
+    display: flex;
+    justify-content: center;
+    padding: var(--spacing-2xl);
+  }
+
+  &__spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--color-border);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  &__card {
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+  }
+
+  /* ── Haut du profil : avatar + infos ── */
+  &__top {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xl);
+  }
+
+  &__avatar {
+    .material-icons {
+      font-size: 80px;
+      color: var(--color-primary);
+      opacity: 0.8;
+    }
+  }
+
+  &__main-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  &__name {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+  }
+
+  /* ── Détails ── */
+  &__details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--color-border);
+  }
+
+  &__detail-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+
+    > .material-icons {
+      color: var(--color-primary);
+      font-size: 22px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    > div {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+  }
+
+  &__detail-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    font-weight: 500;
+  }
+
+  &__detail-value {
+    font-size: var(--font-size-base);
+    color: var(--color-text);
+  }
+
+  /* ── Note info ── */
+  &__note {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    background: #E3F2FD;
+    border-radius: var(--border-radius-md);
+    color: var(--color-primary);
+
+    .material-icons { flex-shrink: 0; }
+    p { font-size: var(--font-size-sm); margin: 0; }
+  }
+}

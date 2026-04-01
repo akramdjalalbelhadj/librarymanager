@@ -1,78 +1,173 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
+
+    <!--
+        spring-boot-starter-parent : le "parent" de tout projet Spring Boot.
+        Il gère les versions de toutes les dépendances Spring pour éviter
+        les conflits de versions. On hérite de sa configuration.
+    -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.13</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>3.2.5</version>
+        <relativePath/>
     </parent>
+
+    <!-- Identifiants du projet -->
     <groupId>fr.amu</groupId>
     <artifactId>LibraryManager</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>LibraryManager</name>
-    <description>LibraryManager</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
+    <description>Application de gestion de bibliothèque universitaire</description>
+
     <properties>
+        <!-- Version de Java utilisée -->
         <java.version>17</java.version>
     </properties>
+
     <dependencies>
+
+        <!-- ═══════════════════════════════════════════════════
+             SPRING BOOT — COUCHE WEB
+             Permet de créer des API REST avec @RestController,
+             @GetMapping, @PostMapping, etc.
+             Inclut un serveur Tomcat embarqué (pas besoin de déployer sur un serveur séparé).
+        ═══════════════════════════════════════════════════ -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- ═══════════════════════════════════════════════════
+             SPRING DATA JPA
+             Permet d'accéder à la base de données avec des interfaces simples.
+             JPA (Java Persistence API) fait le lien entre les classes Java
+             et les tables de la base de données (ORM = Object Relational Mapping).
+             On n'écrit plus de SQL à la main pour les opérations courantes.
+        ═══════════════════════════════════════════════════ -->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+
+        <!-- ═══════════════════════════════════════════════════
+             SPRING SECURITY
+             Gère l'authentification (qui es-tu ?) et l'autorisation
+             (qu'as-tu le droit de faire ?).
+             Permet de protéger les routes de l'API selon le rôle de l'utilisateur.
+        ═══════════════════════════════════════════════════ -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- ═══════════════════════════════════════════════════
+             SPRING VALIDATION
+             Permet de valider les données reçues du frontend
+             avec des annotations comme @NotBlank, @Email, @Size, etc.
+             Évite d'écrire du code de validation manuel.
+        ═══════════════════════════════════════════════════ -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- ═══════════════════════════════════════════════════
+             BASE DE DONNÉES H2 (en mémoire)
+             H2 est une base de données légère qui tourne directement
+             en mémoire RAM. Idéale pour le développement et l'apprentissage :
+             aucune installation de MySQL/PostgreSQL requise.
+             ATTENTION : les données sont perdues au redémarrage (c'est voulu ici).
+        ═══════════════════════════════════════════════════ -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- ═══════════════════════════════════════════════════
+             JSON WEB TOKEN (JWT) — API
+             Interface principale pour créer et lire des tokens JWT.
+             Un JWT est un "ticket sécurisé" qui prouve qu'un utilisateur
+             est connecté, sans stocker de session côté serveur.
+        ═══════════════════════════════════════════════════ -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.12.6</version>
+        </dependency>
+
+        <!-- ═══════════════════════════════════════════════════
+             JSON WEB TOKEN (JWT) — Implémentation
+             L'implémentation concrète de la bibliothèque JWT.
+             Séparée de l'API pour respecter le principe d'inversion
+             de dépendances (on programme vers une interface, pas une implémentation).
+        ═══════════════════════════════════════════════════ -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.12.6</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- ═══════════════════════════════════════════════════
+             JSON WEB TOKEN (JWT) — Support Jackson
+             Permet à la bibliothèque JWT de sérialiser/désérialiser
+             les données JSON dans les tokens grâce à Jackson
+             (la bibliothèque JSON standard de Spring).
+        ═══════════════════════════════════════════════════ -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.12.6</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- ═══════════════════════════════════════════════════
+             SPRING BOOT TEST
+             Fournit les outils pour écrire des tests unitaires
+             et d'intégration (JUnit 5, Mockito, MockMvc...).
+             Scope "test" : uniquement utilisé pendant les tests,
+             pas inclus dans le JAR final.
+        ═══════════════════════════════════════════════════ -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- ═══════════════════════════════════════════════════
+             SPRING SECURITY TEST
+             Permet de tester les routes sécurisées avec des
+             utilisateurs simulés (@WithMockUser, etc.).
+        ═══════════════════════════════════════════════════ -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
-            </plugin>
+
+            <!-- ═══════════════════════════════════════════════════
+                 SPRING BOOT MAVEN PLUGIN
+                 Permet de créer un JAR exécutable ("fat JAR") contenant
+                 toutes les dépendances. On peut ensuite lancer l'app
+                 avec : java -jar target/LibraryManager-0.0.1-SNAPSHOT.jar
+            ═══════════════════════════════════════════════════ -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
             </plugin>
+
         </plugins>
     </build>
 

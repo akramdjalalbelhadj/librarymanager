@@ -1,0 +1,19 @@
+<!--
+  app.component.html — Template du composant racine
+
+  Ce template est minimal : il contient seulement la navbar et le router-outlet.
+  La vraie structure est dans chaque page individuelle.
+-->
+
+<!-- Barre de navigation (présente sur toutes les pages) -->
+<app-navbar></app-navbar>
+
+<!-- Zone principale : Angular injecte ici le composant de la page courante -->
+<main class="main-content">
+  <!--
+    router-outlet : directive Angular qui "creuse un trou" dans le template.
+    Angular y insère le composant correspondant à l'URL courante.
+    Quand l'URL change, le composant est remplacé automatiquement.
+  -->
+  <router-outlet></router-outlet>
+</main>

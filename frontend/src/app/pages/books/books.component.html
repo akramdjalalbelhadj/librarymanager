@@ -1,0 +1,128 @@
+<!-- Page de liste des livres -->
+<div class="books">
+  <div class="container">
+
+    <!-- ── En-tête de page ── -->
+    <div class="books__header">
+      <h1 class="books__title">
+        <span class="material-icons">menu_book</span>
+        Catalogue de livres
+      </h1>
+      <p class="books__subtitle text-secondary">
+        {{ filteredBooks.length }} livre{{ filteredBooks.length > 1 ? 's' : '' }} trouvé{{ filteredBooks.length > 1 ? 's' : '' }}
+      </p>
+    </div>
+
+    <!-- ── Barre de recherche et filtres ── -->
+    <div class="books__filters card">
+
+      <!-- Recherche textuelle -->
+      <div class="books__search">
+        <span class="material-icons books__search-icon">search</span>
+        <!--
+          [(ngModel)] : "two-way data binding" (liaison bidirectionnelle).
+          - Angular → DOM : la valeur du champ reflète searchKeyword
+          - DOM → Angular : chaque frappe met à jour searchKeyword
+          C'est le sucre syntaxique de [ngModel]="x" + (ngModelChange)="x = $event"
+        -->
+        <input
+          type="text"
+          class="form-control books__search-input"
+          [(ngModel)]="searchKeyword"
+          (ngModelChange)="onSearchChange()"
+          placeholder="Rechercher par titre, auteur, catégorie..."
+        >
+        <button
+          class="books__search-clear"
+          *ngIf="searchKeyword"
+          (click)="clearSearch()"
+          aria-label="Effacer la recherche">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+
+      <!-- Filtre par catégorie -->
+      <div class="books__category-filter">
+        <select
+          class="form-control"
+          [(ngModel)]="selectedCategory">
+          <option value="">Toutes les catégories</option>
+          <!--
+            *ngFor sur une liste de chaînes.
+            trackBy: serait une méthode retournant un identifiant unique.
+            Pour des chaînes, on peut utiliser l'index.
+          -->
+          <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+      </div>
+
+    </div>
+
+    <!-- ── Chargement ── -->
+    <div class="books__loading" *ngIf="isLoading">
+      <div class="books__spinner"></div>
+      <p>Chargement des livres...</p>
+    </div>
+
+    <!-- ── Message d'erreur ── -->
+    <div class="alert alert-error" *ngIf="errorMessage && !isLoading">
+      <span class="material-icons">error_outline</span>
+      {{ errorMessage }}
+    </div>
+
+    <!-- ── Aucun résultat ── -->
+    <div class="books__empty" *ngIf="!isLoading && !errorMessage && filteredBooks.length === 0">
+      <span class="material-icons">search_off</span>
+      <p>Aucun livre trouvé pour "{{ searchKeyword }}"</p>
+      <button class="btn btn-outline" (click)="clearSearch()">Voir tous les livres</button>
+    </div>
+
+    <!-- ── Grille de livres ── -->
+    <div class="books__grid" *ngIf="!isLoading && filteredBooks.length > 0">
+      <div class="book-card card" *ngFor="let book of filteredBooks">
+
+        <!-- En-tête de la carte -->
+        <div class="book-card__header">
+          <span class="material-icons book-card__icon">auto_stories</span>
+          <span class="badge" [ngClass]="getAvailabilityClass(book)">
+            {{ getAvailabilityText(book) }}
+          </span>
+        </div>
+
+        <!-- Informations du livre -->
+        <div class="book-card__body">
+          <h3 class="book-card__title">{{ book.titre }}</h3>
+          <p class="book-card__author">
+            <span class="material-icons">person</span>
+            {{ book.auteur }}
+          </p>
+          <p class="book-card__category">
+            <span class="material-icons">label</span>
+            {{ book.categorie }}
+          </p>
+          <p class="book-card__year text-secondary text-sm">
+            Publié en {{ book.anneePublication }}
+          </p>
+
+          <!-- Description (si disponible) -->
+          <p class="book-card__description" *ngIf="book.description">
+            {{ book.description }}
+          </p>
+        </div>
+
+        <!-- Pied de la carte -->
+        <div class="book-card__footer">
+          <span class="text-sm text-secondary">
+            <span class="material-icons">inventory_2</span>
+            {{ book.nombreExemplaires }} exemplaire{{ book.nombreExemplaires > 1 ? 's' : '' }}
+          </span>
+          <span class="text-sm" *ngIf="book.isbn">
+            ISBN : {{ book.isbn }}
+          </span>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
